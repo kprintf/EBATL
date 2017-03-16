@@ -13,11 +13,12 @@ namespace eba {
                         node *ch[2], *par;
                         node(TValue vl, node *pr = 0): val(vl), par(pr) {ch[0] = ch[1] = 0;}
                 };
+                size_t node_counter;
                 node *root;
                 node* path(TValue vl, bool create = false) {
                         if(!root) {
                                 if(create)
-                                        return (root = new node(vl));
+                                        return (node_counter++, root = new node(vl));
                                 else 
                                         return 0;
                         }
@@ -28,7 +29,9 @@ namespace eba {
                                 if(n->ch[bool(value_comparator(n->val, vl))])
                                         n = n->ch[bool(value_comparator(n->val, vl))];
                                 else if(create) 
-                                        return n->ch[bool(value_comparator(n->val, vl))] = new node(vl, n);
+                                        return node_counter++,
+                                               n->ch[bool(value_comparator(n->val, vl))] 
+                                                       = new node(vl, n);
                                 else return 0;
                         }
                 }
@@ -57,7 +60,7 @@ namespace eba {
                         delete nd;
                 }
                 public:
-                bst_naive(): root(0) {}
+                bst_naive(): root(0), node_counter(0) {}
                 ~bst_naive(){ 
                         free_subtree(root);
                 }
@@ -125,7 +128,11 @@ namespace eba {
                                         }
                                         delete n;
                                 }
+                                node_counter--;
                         }
+                }
+                size_t size(){
+                        return node_counter;
                 }
         };
 }

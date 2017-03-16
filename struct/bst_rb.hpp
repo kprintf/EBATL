@@ -52,7 +52,8 @@ namespace eba {
                                 tmp = y->red;
                                 z = y->ch[1];
                                 if (y->par == nd) {
-                                        z->par = y;
+                                        if(z)
+                                                z->par = y;
                                 } else {
                                         transplant(y, y->ch[1]);
                                         y->ch[1] = nd->ch[1];
@@ -69,7 +70,7 @@ namespace eba {
                         node *del = nd;
                         if (!tmp) {
                                 node *tmp; 
-                                while (nd != par::root && !nd->red) {
+                                while (nd->par && !nd->red) {
                                         bool t = nd == nd->par->ch[0];
                                         tmp = nd->par->ch[t];
                                         if (red(tmp)) {
