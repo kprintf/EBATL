@@ -1,5 +1,5 @@
 EBATL as Essential Basic Algorithms in Templates Library
 is project of implementation of some algoritmhs and
 data structure on C++ inclusive templates.
-
- 
+This library relies on existence of STL.
+extra/ folders will contain gifts from my cellmates which should be refactored/restyled sometime later. 
