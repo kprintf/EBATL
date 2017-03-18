@@ -2,20 +2,16 @@
 #       define EBA_DUAL_HPP
 #       include <cmath>
 namespace eba {
-        /* TODO list:
-        tan
-        tanh
-        acos 
-        acosh 
-        asin 
-        asinh 
-        atan 
-        atanh
-         * */
         namespace math {
                 template <typename TNumeric> struct dual {
                         TNumeric real, imag;
                         dual(TNumeric a = TNumeric(), TNumeric b = TNumeric()): real(a), imag(b) {}
+                        bool operator == (const dual &oth) {
+                                return real == oth.real && imag == oth.imag;
+                        }
+                        bool operator != (const dual &oth) {
+                                return real != oth.real || imag != oth.imag;
+                        }
                         dual& operator += (const dual &oth) {
                                 real += oth.real;
                                 imag += oth.imag;
@@ -39,6 +35,26 @@ namespace eba {
                                 y = (imag * oth.real - real * oth.imag)/(oth.real*oth.real);
                                 real = x, imag = y;
                                 return *this;
+                        }
+                        dual operator + (const dual & a) {
+                                dual copy (*this);
+                                copy += a;
+                                return copy;
+                        }
+                        dual operator - (const dual & a) {
+                                dual copy (*this);
+                                copy -= a;
+                                return copy;
+                        }
+                        dual operator / (const dual & a) {
+                                dual copy (*this);
+                                copy /= a;
+                                return copy;
+                        }
+                        dual operator * (const dual & a) {
+                                dual copy (*this);
+                                copy *= a;
+                                return copy;
                         }
                 };
                 template <typename TNumeric>
@@ -76,7 +92,7 @@ namespace eba {
                         TNumeric a, b;
                         a = cos(x.real);
                         b = sin(x.real)*x.imag;
-                        return dual<TNumeric>(a, b); 
+                        return dual<TNumeric>(a, -b); 
                 }
                 template <typename TNumeric>
                 dual<TNumeric> sinh(const dual<TNumeric>& x) {
@@ -112,9 +128,66 @@ namespace eba {
                         return dual<TNumeric>(a, b/a); 
                 }
                 template <typename TNumeric>
-                dual<TNumeric> pow(const dual<TNumeric>& x, TNumeric pow) {
-                        return exp(log(x)*dual<TNumeric>(pow, 0));
+                dual<TNumeric> pow(const dual<TNumeric>& x, const dual<TNumeric>& pow) {
+                        return exp(log(x)*pow);
                 }
+                template <typename TNumeric>
+                dual<TNumeric> tan(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = tan(x.real);
+                        b = x.imag*(TNumeric(1)+a*a);
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> atan(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = atan(x.real);
+                        b = x.imag/(TNumeric(1)+x.real*x.real);
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> asin(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = asin(x.real);
+                        b = x.imag/sqrt(TNumeric(1)-x.real*x.real);
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> acos(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = acos(x.real);
+                        b = -x.imag/sqrt(TNumeric(1)-x.real*x.real);
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> asinh(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = asinh(x.real);
+                        b = x.imag/sqrt(TNumeric(1)+x.real*x.real);
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> acosh(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = acosh(x.real);
+                        b = x.imag/sqrt(x.real*x.real-TNumeric(1));
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> tanh(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = tanh(x.real);
+                        b = x.imag/(cosh(x.real)*cosh(x.real));
+                        return dual<TNumeric>(a, b); 
+                }
+                template <typename TNumeric>
+                dual<TNumeric> atanh(const dual<TNumeric>& x) {
+                        TNumeric a, b;
+                        a = atanh(x.real);
+                        b = x.imag/(TNumeric(1)-x.real*x.real);
+                        return dual<TNumeric>(a, b); 
+                }
+
         };
 };
 #endif
