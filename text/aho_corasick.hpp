@@ -2,16 +2,10 @@
  */
 #ifndef EBA_AHO_CORASICK_HPP
 #       define EBA_AHO_CORASICK_HPP
-#       ifndef EBA_NOSTL
-#              include <bitset>
-#              include <vector>
-using std::bitset;
-using std::vector;
-#       else
-#               error NOSTL mode is unimplemented yet
-#       endif
+#       include <bitset>
 #       include "../struct/map.hpp"
-#       include "../common/string.hpp"
+#       include "../common/common.hpp"
+using std::bitset;
 namespace eba {
         template <
                 typename TString = string,

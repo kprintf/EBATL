@@ -1,7 +1,6 @@
 /*TODO: tst as alternative to map<> addiction*/
 #ifndef EBA_TRIE_HPP
 #       define EBA_TRIE_HPP
-#       include "../common/string.hpp"
 #       include "../common/common.hpp"
 #       include "map.hpp"
 namespace eba {

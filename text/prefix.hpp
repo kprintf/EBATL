@@ -1,12 +1,5 @@
 #ifndef EBA_PREFIX_HPP 
 #       define EBA_PREFIX_HPP
-#       ifdef EBA_NOSTL
-#               error NOSTL mode is unimplemented yet
-#       else
-#       include <vector>
-using std::vector;
-#       endif
-#       include "../common/string.hpp"
 #       include "../common/common.hpp"
 namespace eba {
 
